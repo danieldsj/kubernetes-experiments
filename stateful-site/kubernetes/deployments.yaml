@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stateful-site
+spec:
+  selector:
+    matchLabels:
+      app: stateful-site
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stateful-site
+    spec:
+      containers:
+      - name: stateful-site
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: stateful-site-volume
+          mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: stateful-site-volume
+        persistentVolumeClaim:
+          claimName: stateful-site-persistent-volume-claim
